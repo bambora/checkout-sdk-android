@@ -40,8 +40,6 @@ public class BamboraCheckout {
     private String token;
     private WebView checkoutWebView;
     private CheckoutEventCallbackController checkoutDispatchController;
-    private boolean isDebug = false;
-
 
     /**
      * Bambora Checkout constructor
@@ -63,9 +61,6 @@ public class BamboraCheckout {
     public BamboraCheckout initialize()
     {
         String checkoutUrl = String.format("https://v1.checkout.bambora.com/%1$s?ui=inline", this.token);
-        if(this.isDebug) {
-            checkoutUrl = String.format("http://10.0.2.2:3000/%1$s?ui=inline", this.token);
-        }
         WebSettings checkoutWebSettings = checkoutWebView.getSettings();
         checkoutWebSettings.setJavaScriptEnabled(true);
         checkoutWebView.addJavascriptInterface(checkoutDispatchController, "CheckoutSDKAndroid");
@@ -132,16 +127,5 @@ public class BamboraCheckout {
     public WebView getWebView()
     {
         return this.checkoutWebView;
-    }
-
-
-    /**
-     * This is for internal testing and should never be set.
-     * @return {@Link BamboraCheckout}
-     */
-    public BamboraCheckout debug()
-    {
-        this.isDebug = true;
-        return this;
     }
 }
