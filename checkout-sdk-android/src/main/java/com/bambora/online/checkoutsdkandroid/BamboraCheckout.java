@@ -23,13 +23,16 @@
 package com.bambora.online.checkoutsdkandroid;
 
 import android.annotation.SuppressLint;
+import android.util.Base64;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.bambora.online.checkoutsdkandroid.controllers.CheckoutEventCallbackController;
 import com.bambora.online.checkoutsdkandroid.enums.CheckoutEvents;
 import com.bambora.online.checkoutsdkandroid.interfaces.ICheckoutEventCallback;
+import com.bambora.online.checkoutsdkandroid.BuildConfig;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -60,7 +63,17 @@ public class BamboraCheckout {
     @SuppressLint("SetJavaScriptEnabled")
     public BamboraCheckout initialize()
     {
-        String checkoutUrl = String.format("https://v1.checkout.bambora.com/%1$s?ui=inline", this.token);
+        String versionName = "CheckoutSDKAndroid/" + BuildConfig.VERSION_NAME;
+        String checkoutOptions = String.format("{version:%1s}", versionName);
+
+        String checkoutOptionsHash = "";
+        try {
+            checkoutOptionsHash = Base64.encodeToString(checkoutOptions.getBytes("UTF-8"), Base64.NO_WRAP | Base64.URL_SAFE);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        String checkoutUrl = String.format("https://v1.checkout.bambora.com/%1$s?ui=inline#%2$s", this.token, checkoutOptionsHash);
         WebSettings checkoutWebSettings = checkoutWebView.getSettings();
         checkoutWebSettings.setJavaScriptEnabled(true);
         checkoutWebView.addJavascriptInterface(checkoutDispatchController, "CheckoutSDKAndroid");
