@@ -20,24 +20,39 @@
  * THE SOFTWARE.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    repositories {
-        flatDir {
-            dirs "libs"
-        }
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
-    }
-}
+import com.bambora.android.java.bamborasdk.extensions.isAllowedDomain
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
-plugins {
-    id 'com.android.application' version '7.2.0' apply false
-    id 'com.android.library' version '7.2.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
-}
+@RunWith(RobolectricTestRunner::class)
+class AllowedDomainTest {
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    @Test
+    fun allowed_domain() {
+        var allowedDomain = "https://wallet-v1-test.api.epay.eu/allowed/domain"
+        var isAllowed = allowedDomain.isAllowedDomain()
+
+        assertTrue(isAllowed)
+
+        allowedDomain = "https://wallet-v1.api.epay.eu/allowed/domain"
+        isAllowed = allowedDomain.isAllowedDomain()
+
+        assertTrue(isAllowed)
+    }
+
+    @Test
+    fun forbidden_domain() {
+        var forbiddenDomain = "https://forbidden.domain/forbidden/domain"
+        var isAllowed = forbiddenDomain.isAllowedDomain()
+
+        assertFalse(isAllowed)
+
+        forbiddenDomain = "https://api.epay.eu/allowed/domain"
+        isAllowed = forbiddenDomain.isAllowedDomain()
+
+        assertFalse(isAllowed)
+    }
 }

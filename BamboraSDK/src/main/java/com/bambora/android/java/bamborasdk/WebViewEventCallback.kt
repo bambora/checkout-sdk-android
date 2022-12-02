@@ -20,24 +20,30 @@
  * THE SOFTWARE.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    repositories {
-        flatDir {
-            dirs "libs"
-        }
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
-    }
-}
+package com.bambora.android.java.bamborasdk
 
-plugins {
-    id 'com.android.application' version '7.2.0' apply false
-    id 'com.android.library' version '7.2.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
-}
+/**
+ *  The interface to be called for every WebView Event.
+ */
+internal interface WebViewEventCallback {
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    /**
+     * Method for handling Javascript WebView events.
+     *
+     * @param eventType Bambora checkout event type as a String.
+     * @param jsonPayload JSON payload for Bambora checkout event type.
+     */
+    fun onJavascriptEventDispatched(eventType: String, jsonPayload: String)
+
+    /**
+     * Method for handling WebView close events.
+     */
+    fun onWebViewClosed()
+
+    /**
+     * Method for handling WebView errors.
+     *
+     * @param errorCode WebView error code ID
+     */
+    fun onWebViewError(errorCode: Int)
 }

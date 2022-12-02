@@ -20,24 +20,25 @@
  * THE SOFTWARE.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    repositories {
-        flatDir {
-            dirs "libs"
-        }
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
-    }
-}
+package com.bambora.android.java.bamborasdk
 
-plugins {
-    id 'com.android.application' version '7.2.0' apply false
-    id 'com.android.library' version '7.2.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
-}
+import android.webkit.JavascriptInterface
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+/**
+ * JavaScript interface for handling dispatched events from the WebView.
+ *
+ * @param checkoutJavascriptInterfaceCallback Forwards Javascript events to [BamboraCheckoutFragment].
+ */
+internal class CheckoutJavascriptInterface(private val checkoutJavascriptInterfaceCallback: WebViewEventCallback?) {
+    /**
+     * Forwards received [EventType] and JSON payload to [WebViewEventCallback].
+     *
+     * @param eventType Bambora Checkout [EventType] as a String.
+     * @param jsonPayload JSON payload for Bambora Checkout [EventType].
+     */
+    @JavascriptInterface
+    @SuppressWarnings("unused")
+    fun dispatchEvent(eventType: String, jsonPayload: String) {
+        checkoutJavascriptInterfaceCallback?.onJavascriptEventDispatched(eventType, jsonPayload)
+    }
 }

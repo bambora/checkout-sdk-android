@@ -20,24 +20,15 @@
  * THE SOFTWARE.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    repositories {
-        flatDir {
-            dirs "libs"
-        }
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
-    }
-}
+package com.bambora.android.java.demoapp
 
-plugins {
-    id 'com.android.application' version '7.2.0' apply false
-    id 'com.android.library' version '7.2.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
-}
+import androidx.lifecycle.ViewModel
+import com.bambora.android.java.bamborasdk.Event
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+/**
+ * View Model that is shared by all Fragments in the Main Activity.
+ * Contains an instance of [Event.Authorize], which is set by the SessionFragment and whose values are read by the OverviewFragment.
+ */
+internal class AuthorizationDataViewModel: ViewModel() {
+    lateinit var authorizationData: Event.Authorize
 }

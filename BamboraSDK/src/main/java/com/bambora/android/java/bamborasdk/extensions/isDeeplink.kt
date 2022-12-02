@@ -20,24 +20,15 @@
  * THE SOFTWARE.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    repositories {
-        flatDir {
-            dirs "libs"
-        }
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
-    }
-}
+package com.bambora.android.java.bamborasdk.extensions
 
-plugins {
-    id 'com.android.application' version '7.2.0' apply false
-    id 'com.android.library' version '7.2.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
-}
+import android.net.Uri
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+/**
+ * Extension function for checking if a Uri is a deeplink.
+ * Returns false if Uri contains 'http' or 'https'.
+ */
+internal fun Uri.isDeeplink(): Boolean {
+
+    return !(this.scheme.equals("http") || this.scheme.equals("https"))
 }

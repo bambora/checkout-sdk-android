@@ -20,24 +20,18 @@
  * THE SOFTWARE.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    repositories {
-        flatDir {
-            dirs "libs"
-        }
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
-    }
-}
+package com.bambora.android.java.bamborasdk
 
-plugins {
-    id 'com.android.application' version '7.2.0' apply false
-    id 'com.android.library' version '7.2.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
-}
+/**
+ * Callback interface for receiving Bambora Checkout events.
+ */
+interface CheckoutEventReceiver {
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    /**
+     * Called when a Bambora Checkout [Event] is received.
+     * Implement your event handling logic in this method.
+     *
+     * @param event An instance of the received [Event]. The event may contain additional data.
+     */
+    fun onEventDispatched(event: Event)
 }

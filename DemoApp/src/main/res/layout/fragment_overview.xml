@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2022.  Bambora ( https://bambora.com/ )
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in
+  ~ all copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  ~ THE SOFTWARE.
+  -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/purple"
+    android:padding="@dimen/margin_16"
+    tools:context=".OverviewFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/authorizedHeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/payment_authorized_header"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_20"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/transactionIdLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/authorizedHeaderTextView">
+
+            <TextView
+                android:id="@+id/transactionIdTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/transaction_id_title"/>
+
+            <TextView
+                android:id="@+id/transactionIdDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/orderIdLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/transactionIdLayout">
+
+            <TextView
+                android:id="@+id/orderIdTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/order_id_title"/>
+
+            <TextView
+                android:id="@+id/orderIdDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/referenceLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/orderIdLayout">
+
+            <TextView
+                android:id="@+id/referenceTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/reference_title"/>
+
+            <TextView
+                android:id="@+id/referenceDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/amountLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/referenceLayout">
+
+            <TextView
+                android:id="@+id/amountTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/amount_title"/>
+
+            <TextView
+                android:id="@+id/amountDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/currencyLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/amountLayout">
+
+            <TextView
+                android:id="@+id/currencyTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/currency_title"/>
+
+            <TextView
+                android:id="@+id/currencyDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/currencyLayout">
+
+            <TextView
+                android:id="@+id/dateTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/date_title"/>
+
+            <TextView
+                android:id="@+id/dateDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/timeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/dateLayout">
+
+            <TextView
+                android:id="@+id/timeTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/time_title"/>
+
+            <TextView
+                android:id="@+id/timeDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/feeIdLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/timeLayout">
+
+            <TextView
+                android:id="@+id/feeIdTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/fee_id_title"/>
+
+            <TextView
+                android:id="@+id/feeIdDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/transactionFeeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/feeIdLayout">
+
+            <TextView
+                android:id="@+id/transactionFeeTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/transaction_fee_title"/>
+
+            <TextView
+                android:id="@+id/transactionFeeDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/paymentTypeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/transactionFeeLayout">
+
+            <TextView
+                android:id="@+id/paymentTypeTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/payment_type_id_title"/>
+
+            <TextView
+                android:id="@+id/paymentTypeDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/walletLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/paymentTypeLayout">
+
+            <TextView
+                android:id="@+id/walletTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/wallet_title"/>
+
+            <TextView
+                android:id="@+id/walletDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cardNumberLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/walletLayout">
+
+            <TextView
+                android:id="@+id/cardNumberTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/card_number_title"/>
+
+            <TextView
+                android:id="@+id/cardNumberDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/expireMonthLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/cardNumberLayout">
+
+            <TextView
+                android:id="@+id/expireMonthTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/expire_month_title"/>
+
+            <TextView
+                android:id="@+id/expireMonthDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/expireYearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/expireMonthLayout">
+
+            <TextView
+                android:id="@+id/expireYearTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/expire_year_title"/>
+
+            <TextView
+                android:id="@+id/expireYearDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/subscriptionIdLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/expireYearLayout">
+
+            <TextView
+                android:id="@+id/subscriptionIdTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/subscription_id_title"/>
+
+            <TextView
+                android:id="@+id/subscriptionIdDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tokenIdLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/subscriptionIdLayout">
+
+            <TextView
+                android:id="@+id/tokenIdTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/token_id_title"/>
+
+            <TextView
+                android:id="@+id/tokenIdDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/eciLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tokenIdLayout">
+
+            <TextView
+                android:id="@+id/eciTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/eci_title"/>
+
+            <TextView
+                android:id="@+id/eciDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/issuerCountryLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/eciLayout">
+
+            <TextView
+                android:id="@+id/issuerCountryTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/issuer_country_title"/>
+
+            <TextView
+                android:id="@+id/issuerCountryDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hashLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/issuerCountryLayout">
+
+            <TextView
+                android:id="@+id/hashTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                style="@style/overview_element"
+                android:text="@string/hash_title"/>
+
+            <TextView
+                android:id="@+id/hashDataTextView"
+                android:layout_weight="0.5"
+                android:layout_width="fill_parent"
+                android:textAlignment="viewEnd"
+                style="@style/overview_element"
+                tools:text="@string/unknown_value"/>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/additionalFieldsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/hashLayout" />
+
+        <Button
+            android:id="@+id/newSessionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_20"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:backgroundTint="@color/light_purple"
+            android:padding="@dimen/margin_16"
+            android:text="@string/button_new_session"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/additionalFieldsRecyclerView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

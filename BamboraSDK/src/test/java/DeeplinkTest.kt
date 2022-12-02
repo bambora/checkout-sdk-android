@@ -20,24 +20,44 @@
  * THE SOFTWARE.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    repositories {
-        flatDir {
-            dirs "libs"
-        }
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
-    }
-}
+import android.net.Uri
+import com.bambora.android.java.bamborasdk.extensions.isDeeplink
+import junit.framework.TestCase.assertTrue
+import junit.framework.TestCase.assertFalse
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
-plugins {
-    id 'com.android.application' version '7.2.0' apply false
-    id 'com.android.library' version '7.2.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
-}
+@RunWith(RobolectricTestRunner::class)
+internal class DeeplinkTest {
+    @Test
+    fun is_deeplink() {
+        var deeplink = Uri.parse("mobilepay://app")
+        var isDeeplink = deeplink.isDeeplink()
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+        assertTrue(isDeeplink)
+
+        deeplink = Uri.parse("vipps://app")
+        isDeeplink = deeplink.isDeeplink()
+
+        assertTrue(isDeeplink)
+
+        deeplink = Uri.parse("swish://app")
+        isDeeplink = deeplink.isDeeplink()
+
+        assertTrue(isDeeplink)
+    }
+
+    @Test
+    fun is_no_deeplink() {
+        var link = Uri.parse("http://google.com")
+        var isDeeplink = link.isDeeplink()
+
+        assertFalse(isDeeplink)
+
+        link = Uri.parse("https://google.com")
+        isDeeplink = link.isDeeplink()
+
+        assertFalse(isDeeplink)
+    }
 }

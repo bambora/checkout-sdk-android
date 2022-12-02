@@ -20,24 +20,13 @@
  * THE SOFTWARE.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    repositories {
-        flatDir {
-            dirs "libs"
-        }
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
-    }
-}
+package com.bambora.android.java.bamborasdk
 
-plugins {
-    id 'com.android.application' version '7.2.0' apply false
-    id 'com.android.library' version '7.2.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
+/**
+ * Static constant values of the SDK.
+ */
+internal object BamboraConstants {
+    const val CHECKOUT_BASE_URL = "https://v1.checkout.bambora.com"
+    const val CHECKOUT_JAVASCRIPT_INTERFACE_NAME = "CheckoutSDKAndroid"
+    const val CHECKOUT_WEB_VIEW_INLINE = "?ui=inline"
 }

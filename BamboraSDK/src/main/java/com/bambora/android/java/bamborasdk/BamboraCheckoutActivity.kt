@@ -20,24 +20,36 @@
  * THE SOFTWARE.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    repositories {
-        flatDir {
-            dirs "libs"
+package com.bambora.android.java.bamborasdk
+
+import android.content.Intent
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+
+/**
+ * Container activity for showing the [BamboraCheckoutFragment] as a bottom sheet.
+ * This Activity is also loaded when the [Checkout] is initialized and a return URL is received.
+ */
+internal class BamboraCheckoutActivity : AppCompatActivity() {
+
+    private lateinit var bamboraCheckoutFragment: BamboraCheckoutFragment
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Bambora.checkout?.bamboraCheckoutActivity = this
+        bamboraCheckoutFragment = BamboraCheckoutFragment().apply {
+            show(supportFragmentManager, null)
         }
     }
-    dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
+
+    /**
+     * Instructs the fragment to open the epayReturnUrl that was received.
+     */
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        val epayReturnUrl = intent?.extras?.getString("epayReturnUrl")
+        if (epayReturnUrl != null) {
+            bamboraCheckoutFragment.openEpayReturnUrl(epayReturnUrl)
+        }
     }
-}
-
-plugins {
-    id 'com.android.application' version '7.2.0' apply false
-    id 'com.android.library' version '7.2.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }

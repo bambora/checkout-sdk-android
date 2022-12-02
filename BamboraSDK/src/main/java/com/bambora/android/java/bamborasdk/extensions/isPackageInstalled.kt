@@ -20,24 +20,21 @@
  * THE SOFTWARE.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    repositories {
-        flatDir {
-            dirs "libs"
-        }
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
-    }
-}
+package com.bambora.android.java.bamborasdk.extensions
 
-plugins {
-    id 'com.android.application' version '7.2.0' apply false
-    id 'com.android.library' version '7.2.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
-}
+import android.content.Context
+import android.content.pm.PackageManager
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+/**
+ * Extension function for checking if the provided app package is installed.
+ *
+ * @param packageName The fully quantified package name of the app you want to check.
+ */
+internal fun Context.isPackageInstalled(packageName: String): Boolean {
+    return try {
+        packageManager.getPackageInfo(packageName, 0)
+        true
+    } catch (exception: PackageManager.NameNotFoundException) {
+        false
+    }
 }

@@ -20,24 +20,28 @@
  * THE SOFTWARE.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    repositories {
-        flatDir {
-            dirs "libs"
-        }
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
-    }
-}
+import com.bambora.android.java.bamborasdk.Bambora
+import com.bambora.android.java.bamborasdk.BamboraCheckoutActivity
+import junit.framework.TestCase.assertEquals
+import org.junit.After
+import org.junit.Test
+import org.mockito.Mockito
 
-plugins {
-    id 'com.android.application' version '7.2.0' apply false
-    id 'com.android.library' version '7.2.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
-}
+internal class CustomCheckoutTest {
+    private val mockBamboraCheckoutActivity = Mockito.mock(BamboraCheckoutActivity::class.java)
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    @After
+    fun closeSDK() {
+        Bambora.close()
+    }
+
+
+    @Test
+    fun baseUrl_with_value() {
+        val customBaseUrl = "https://base.url.com"
+        val checkout = Bambora.checkout("sessionTokenBaseUrlWithValue", "appSchemeTest", customBaseUrl)
+        checkout.bamboraCheckoutActivity = mockBamboraCheckoutActivity
+
+        assertEquals(customBaseUrl, checkout.baseUrl)
+    }
 }
