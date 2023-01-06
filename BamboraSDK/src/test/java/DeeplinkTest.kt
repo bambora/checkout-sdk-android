@@ -22,8 +22,8 @@
 
 import android.net.Uri
 import com.bambora.android.java.bamborasdk.extensions.isDeeplink
-import junit.framework.TestCase.assertTrue
 import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -31,7 +31,7 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 internal class DeeplinkTest {
     @Test
-    fun is_deeplink() {
+    fun uri_is_deeplink() {
         var deeplink = Uri.parse("mobilepay://app")
         var isDeeplink = deeplink.isDeeplink()
 
@@ -49,13 +49,44 @@ internal class DeeplinkTest {
     }
 
     @Test
-    fun is_no_deeplink() {
+    fun uri_is_no_deeplink() {
         var link = Uri.parse("http://google.com")
         var isDeeplink = link.isDeeplink()
 
         assertFalse(isDeeplink)
 
         link = Uri.parse("https://google.com")
+        isDeeplink = link.isDeeplink()
+
+        assertFalse(isDeeplink)
+    }
+
+    @Test
+    fun string_is_deeplink() {
+        var deeplink = "mobilepay://app"
+        var isDeeplink = deeplink.isDeeplink()
+
+        assertTrue(isDeeplink)
+
+        deeplink = "vipps://app"
+        isDeeplink = deeplink.isDeeplink()
+
+        assertTrue(isDeeplink)
+
+        deeplink = "swish://app"
+        isDeeplink = deeplink.isDeeplink()
+
+        assertTrue(isDeeplink)
+    }
+
+    @Test
+    fun string_is_no_deeplink() {
+        var link = "http://google.com"
+        var isDeeplink = link.isDeeplink()
+
+        assertFalse(isDeeplink)
+
+        link = "https://google.com"
         isDeeplink = link.isDeeplink()
 
         assertFalse(isDeeplink)

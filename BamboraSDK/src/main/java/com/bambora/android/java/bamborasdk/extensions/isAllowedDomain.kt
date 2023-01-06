@@ -31,7 +31,11 @@ import android.net.Uri
 internal fun String.isAllowedDomain(): Boolean {
     val allowedDomains = listOf(
         "wallet-v1-test.api.epay.eu",
-        "wallet-v1.api.epay.eu"
+        "wallet-v1.api.epay.eu",
+        "wallet-v1.api-eu.bambora.com",
+        "authorize-v1-test.api.epay.eu",
+        "authorize-v1.api.epay.eu",
+        "authorize-v1.api-eu.bambora.com"
     )
 
     return allowedDomains.contains(this.hostName())

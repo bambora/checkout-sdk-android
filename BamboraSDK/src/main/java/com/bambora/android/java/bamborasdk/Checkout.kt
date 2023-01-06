@@ -24,22 +24,38 @@ package com.bambora.android.java.bamborasdk
 
 import android.content.Context
 import android.content.Intent
+import android.util.Base64
 import com.bambora.android.java.bamborasdk.extensions.isNetworkAvailable
+import com.bambora.android.java.bamborasdk.extensions.isPackageInstalled
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.nio.charset.StandardCharsets
 
 /**
  *  The layer between your app and the SDK.
  */
-class Checkout internal constructor(internal var sessionToken: String, private var appScheme: String, internal var baseUrl: String) {
+class Checkout {
 
     /**
      * Interface which should be provided to receive the events that are generated during the payment.
      */
     var checkoutEventReceiver: CheckoutEventReceiver? = null
 
-    internal val returnUrl: String = "$appScheme://bamborasdk/return"
+    private var checkoutUrl: String
+    internal lateinit var returnUrl: String
+
     internal val subscribedEvents = mutableListOf<EventType>()
 
     internal lateinit var bamboraCheckoutActivity: BamboraCheckoutActivity
+
+    internal constructor(sessionToken: String, appScheme: String, baseUrl: String, context: Context) {
+        this.returnUrl = "$appScheme://bamborasdk/return"
+        this.checkoutUrl = constructCheckoutUrl(baseUrl, sessionToken, context)
+    }
+
+    internal constructor(epayReturnUrl: String) {
+        this.checkoutUrl = epayReturnUrl
+    }
 
     /**
      * Callback for WebView events.
@@ -67,10 +83,37 @@ class Checkout internal constructor(internal var sessionToken: String, private v
      */
     fun show(context: Context) {
         if (context.isNetworkAvailable()) {
-            context.startActivity(Intent(context,BamboraCheckoutActivity::class.java))
+            val intent = Intent(context, BamboraCheckoutActivity::class.java)
+            intent.putExtra("urlToOpen", checkoutUrl)
+
+            context.startActivity(intent)
         } else {
             checkoutEventReceiver?.onEventDispatched(Event.Error(BamboraException.InternetException))
         }
+    }
+
+    private fun constructCheckoutUrl(baseUrl: String, sessionToken: String, context: Context): String {
+        return "${baseUrl}/${sessionToken}${BamboraConstants.CHECKOUT_WEB_VIEW_INLINE}#${getEncodedPaymentOptions(context)}"
+    }
+
+    /**
+     * @return The [PaymentOptions] as a Base64 encoded JSON string.
+     */
+    private fun getEncodedPaymentOptions(context: Context): String {
+        val paymentOptions = PaymentOptions(BuildConfig.VERSION_NAME, returnUrl, getInstalledWalletProducts(context).map { it.productName })
+        val jsonString = Json.encodeToString(paymentOptions)
+        return Base64.encodeToString(jsonString.toByteArray(
+            StandardCharsets.UTF_8), Base64.NO_WRAP or Base64.URL_SAFE)
+    }
+
+    private fun getInstalledWalletProducts(context: Context): List<WalletProduct> {
+        return WalletProduct.values().toList().filter {
+            context.isPackageInstalled(it.packageName)
+        }
+    }
+
+    internal fun setEpayReturnUrl(epayReturnUrl: String) {
+        this.checkoutUrl = epayReturnUrl
     }
 
     /**
@@ -113,7 +156,6 @@ class Checkout internal constructor(internal var sessionToken: String, private v
      */
     fun off(event: EventType) {
         if (subscribedEvents.contains(event)) subscribedEvents.remove(event)
-
     }
 
     /**

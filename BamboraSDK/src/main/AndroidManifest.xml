@@ -21,13 +21,17 @@
   ~ THE SOFTWARE.
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bambora.android.java.bamborasdk">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <queries>
+        <!-- Test apps -->
+        <package android:name="dk.danskebank.mobilepay.vendor.sprint" />
+        <package android:name="no.dnb.vipps.mt" />
+        <package android:name="se.bankgirot.swish.sandbox" />
+        <!-- Production apps -->
         <package android:name="dk.danskebank.mobilepay" />
         <package android:name="no.dnb.vipps" />
         <package android:name="se.bankgirot.swish" />
@@ -37,8 +41,8 @@
         <activity
             android:name="com.bambora.android.java.bamborasdk.BamboraCheckoutActivity"
             android:exported="true"
-            android:launchMode="singleTask"
             android:theme="@style/Theme.Bambora.Checkout"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
         </activity>
     </application>

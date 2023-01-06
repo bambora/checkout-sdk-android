@@ -28,5 +28,5 @@ package com.bambora.android.java.bamborasdk.extensions
  * Else, the dictionary itself is returned.
  */
 internal fun Map<String, String>.isEmptyCheck(): Map<String, String>? {
-    return if (this.isEmpty()) null else this
+    return this.ifEmpty { null }
 }

@@ -28,7 +28,6 @@ import androidx.appcompat.app.AppCompatActivity
 
 /**
  * Container activity for showing the [BamboraCheckoutFragment] as a bottom sheet.
- * This Activity is also loaded when the [Checkout] is initialized and a return URL is received.
  */
 internal class BamboraCheckoutActivity : AppCompatActivity() {
 
@@ -37,8 +36,14 @@ internal class BamboraCheckoutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Bambora.checkout?.bamboraCheckoutActivity = this
-        bamboraCheckoutFragment = BamboraCheckoutFragment().apply {
-            show(supportFragmentManager, null)
+
+        val url = intent?.extras?.getString("urlToOpen")
+        if (url != null) {
+            bamboraCheckoutFragment = BamboraCheckoutFragment(url).apply {
+                show(supportFragmentManager, null)
+            }
+        } else {
+            throw BamboraException.GenericException
         }
     }
 
@@ -47,9 +52,9 @@ internal class BamboraCheckoutActivity : AppCompatActivity() {
      */
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        val epayReturnUrl = intent?.extras?.getString("epayReturnUrl")
+        val epayReturnUrl = intent?.extras?.getString("urlToOpen")
         if (epayReturnUrl != null) {
-            bamboraCheckoutFragment.openEpayReturnUrl(epayReturnUrl)
+            bamboraCheckoutFragment.openUrl(epayReturnUrl)
         }
     }
 }

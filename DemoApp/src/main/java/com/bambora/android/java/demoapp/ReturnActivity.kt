@@ -23,52 +23,35 @@
 package com.bambora.android.java.demoapp
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.bambora.android.java.demoapp.databinding.ActivityMainBinding
 
 /**
- * The initial activity of the app.
- *
- * If it is redirected to from the [ReturnActivity], it will have a deeplink URL in its extras.
- * If the deeplink URL is not null, it will process the deeplink based on whether the Checkout is initialized or not.
+ * This activity is started when the wallet app redirects back to your app.
+ * It will intercept the URL that was used to open your app and forward it to the activity of your choice. In this case the [MainActivity].
  */
-class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
-    internal val bamboraSDKHelper = BamboraSDKHelper(this)
-
+class ReturnActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        openSessionFragment()
 
-        val deeplink = intent?.extras?.getString("deeplink")
-        if (deeplink != null) {
-            bamboraSDKHelper.processDeeplink(deeplink)
-        }
+        val deeplink = intent?.data
+        launchMainActivity(deeplink)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        val deeplink = intent?.extras?.getString("deeplink")
+
+        val deeplink = intent?.data
+        launchMainActivity(deeplink)
+    }
+
+    private fun launchMainActivity(deeplink: Uri?) {
         if (deeplink != null) {
-            bamboraSDKHelper.processDeeplink(deeplink)
-        }
-    }
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("deeplink", deeplink.toString())
 
-    internal fun openSessionFragment() {
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragmentContainerView, SessionFragment())
-            commit()
-        }
-    }
-
-    internal fun openOverviewFragment() {
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragmentContainerView, OverviewFragment())
-            commit()
+            startActivity(intent)
         }
     }
 }

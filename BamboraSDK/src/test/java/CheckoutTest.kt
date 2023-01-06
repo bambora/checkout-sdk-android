@@ -20,8 +20,13 @@
  * THE SOFTWARE.
  */
 
-import com.bambora.android.java.bamborasdk.*
-import junit.framework.TestCase.*
+import com.bambora.android.java.bamborasdk.Bambora
+import com.bambora.android.java.bamborasdk.BamboraCheckoutActivity
+import com.bambora.android.java.bamborasdk.Checkout
+import com.bambora.android.java.bamborasdk.EventType
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

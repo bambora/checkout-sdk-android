@@ -33,6 +33,7 @@
         <item name="colorOnSecondary">@color/purple</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <!-- Cold start screen color -->
+        <item name="android:windowBackground">@color/purple</item>
     </style>
 </resources>

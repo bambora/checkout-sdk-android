@@ -58,7 +58,7 @@ internal object CheckoutEventMapper {
      */
     fun mapEventObject(eventType: EventType, jsonPayload: String): Event {
         return when (eventType) {
-            EventType.PAYMENT_TYPE_SELECTION -> Event.PaymentTypeSelection(jsonPayload.replace("\"",""))
+            EventType.PAYMENT_TYPE_SELECTION -> Event.PaymentTypeSelection(jsonPayload.replace("\"", ""))
             EventType.CARD_TYPE_RESOLVE -> Json.decodeFromString<Event.CardTypeResolve>(jsonPayload)
             EventType.AUTHORIZE -> Json.decodeFromString<AuthorizeResponse>(jsonPayload).data
             else -> Event.Error(BamboraException.GenericException)

@@ -25,7 +25,6 @@ package com.bambora.android.java.bamborasdk
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Base64
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -34,38 +33,35 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.FrameLayout
-import com.bambora.android.java.bamborasdk.databinding.FragmentBamboraCheckoutBinding
-import com.bambora.android.java.bamborasdk.extensions.isAllowedDomain
+import com.bambora.android.java.bamborasdk.databinding.BamboraCheckoutBinding
 import com.bambora.android.java.bamborasdk.extensions.isDeeplink
-import com.bambora.android.java.bamborasdk.extensions.isPackageInstalled
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import java.nio.charset.StandardCharsets
 
 /**
  * Fragment is a bottom sheet which shows the WebView on top of the host app.
  * This Fragment lives in the [BamboraCheckoutActivity].
+ *
+ * It is intended to be loaded when initializing a payment session.
+ * It is also intended to be loaded when a return URL is received.
  */
-internal class BamboraCheckoutFragment : BottomSheetDialogFragment() {
+internal class BamboraCheckoutFragment(private val url: String) : BottomSheetDialogFragment() {
 
-    private lateinit var binding: FragmentBamboraCheckoutBinding
+    private lateinit var binding: BamboraCheckoutBinding
     private lateinit var checkout: Checkout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         checkout = Bambora.checkout ?: throw BamboraException.SdkNotInitializedException
 
-        binding = FragmentBamboraCheckoutBinding.inflate(inflater, container, false)
+        binding = BamboraCheckoutBinding.inflate(inflater, container, false)
         initWebView()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initBottomSheet()
+
+        val displayMetrics: DisplayMetrics = this.resources.displayMetrics
+        BottomSheetHelper.initBottomSheet(dialog, binding.bamboraCheckoutContentContainer, displayMetrics)
     }
 
     /**
@@ -74,35 +70,6 @@ internal class BamboraCheckoutFragment : BottomSheetDialogFragment() {
     override fun onDestroy() {
         super.onDestroy()
         checkout.webViewEventCallback.onWebViewClosed()
-    }
-
-    private fun initBottomSheet() {
-        this.dialog?.setOnShowListener { dialog ->
-            val bottomSheetDialog = dialog as BottomSheetDialog
-            bottomSheetDialog.apply {
-                behavior.state = BottomSheetBehavior.STATE_EXPANDED
-                behavior.maxHeight = getMaxHeightOfBottomSheet()
-            }
-
-            val container: FrameLayout = binding.bamboraCheckoutContentContainer
-            BottomSheetBehavior.from(container).apply {
-                state = BottomSheetBehavior.STATE_EXPANDED
-                peekHeight = getMaxHeightOfBottomSheet()
-            }
-
-            val bottomSheet =
-                bottomSheetDialog.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
-            bottomSheet?.apply {
-                layoutParams.height = getMaxHeightOfBottomSheet()
-                requestLayout()
-            }
-        }
-    }
-
-    private fun getMaxHeightOfBottomSheet(): Int {
-        val displayMetrics: DisplayMetrics = this.resources.displayMetrics
-        val height = displayMetrics.heightPixels
-        return (height * 0.80).toInt()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -147,43 +114,16 @@ internal class BamboraCheckoutFragment : BottomSheetDialogFragment() {
                 BamboraConstants.CHECKOUT_JAVASCRIPT_INTERFACE_NAME
             )
 
-            loadUrl(constructCheckoutUrl())
-
+            openUrl()
         }
-    }
-
-    private fun constructCheckoutUrl(): String {
-        return "${checkout.baseUrl}/${checkout.sessionToken}${BamboraConstants.CHECKOUT_WEB_VIEW_INLINE}#${getEncodedPaymentOptions()}"
     }
 
     /**
      * Opens the provided URL in the WebView.
      *
-     * @param url The epayReturnUrl that should be opened in the WebView.
-     *
-     * @throws BamboraException.GenericException when the provided URL domain is not allowed.
+     * @param url The URL that should be opened in the WebView. If no URL is provided, the URL provided in the [BamboraCheckoutFragment] constructor will be opened.
      */
-    fun openEpayReturnUrl(url: String) {
-        if (url.isAllowedDomain()) {
-            binding.bamboraCheckoutWebView.loadUrl(url)
-        } else {
-            throw BamboraException.GenericException
-        }
-    }
-
-    /**
-     * @return The [PaymentOptions] as a Base64 encoded JSON string.
-     */
-    private fun getEncodedPaymentOptions(): String {
-        val paymentOptions = PaymentOptions(BuildConfig.VERSION_NAME, checkout.returnUrl, getInstalledWalletProducts().map { it.productName })
-        val jsonString = Json.encodeToString(paymentOptions)
-        return Base64.encodeToString(jsonString.toByteArray(
-            StandardCharsets.UTF_8), Base64.NO_WRAP or Base64.URL_SAFE)
-    }
-
-    private fun getInstalledWalletProducts(): List<WalletProduct> {
-        return WalletProduct.values().toList().filter {
-            context?.isPackageInstalled(it.packageName) == true
-        }
+    internal fun openUrl(url: String = this.url) {
+        binding.bamboraCheckoutWebView.loadUrl(url)
     }
 }

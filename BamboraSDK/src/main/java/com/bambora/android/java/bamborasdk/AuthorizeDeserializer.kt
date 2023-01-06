@@ -31,8 +31,9 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonDecoder
 
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 @Serializer(forClass = Event.Authorize::class)
-internal object AuthorizeDeserializer: KSerializer<Event.Authorize> {
+internal object AuthorizeDeserializer : KSerializer<Event.Authorize> {
     private val stringToStringElementSerializer = MapSerializer(String.serializer(), String.serializer())
 
     override fun deserialize(decoder: Decoder): Event.Authorize {

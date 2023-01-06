@@ -28,14 +28,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import java.util.*
+import java.util.Locale
 
 internal class AdditionalFieldAdapter(private val additionalFieldsMap: Map<String, String>) :
     RecyclerView.Adapter<AdditionalFieldAdapter.AdditionalFieldViewHolder>() {
 
     internal inner class AdditionalFieldViewHolder(view: View) : ViewHolder(view) {
         var fieldTitleTextView: TextView = view.findViewById(R.id.additionalFieldTextView)
-        var fieldDataTextView : TextView = view.findViewById(R.id.additionalFieldDataTextView)
+        var fieldDataTextView: TextView = view.findViewById(R.id.additionalFieldDataTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdditionalFieldViewHolder {
@@ -53,7 +53,7 @@ internal class AdditionalFieldAdapter(private val additionalFieldsMap: Map<Strin
             ) else it.toString()
         }
 
-        holder.fieldTitleTextView.text = "${capitalizedItemName}:"
+        holder.fieldTitleTextView.text = "$capitalizedItemName:"
         holder.fieldDataTextView.text = item.second
     }
     override fun getItemCount(): Int {

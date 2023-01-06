@@ -24,9 +24,9 @@ import com.bambora.android.java.bamborasdk.BamboraException
 import com.bambora.android.java.bamborasdk.CheckoutEventMapper
 import com.bambora.android.java.bamborasdk.Event
 import com.bambora.android.java.bamborasdk.EventType
-import junit.framework.TestCase.assertTrue
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
+import junit.framework.TestCase.assertTrue
 import org.junit.Test
 import kotlin.test.assertFailsWith
 
@@ -171,9 +171,9 @@ class AuthorizeDecoderTest {
         }
         """
 
-         assertFailsWith<BamboraException.GenericException> {
-             val event = CheckoutEventMapper.mapEventObject(EventType.AUTHORIZE, jsonResponse)
-         }
+        assertFailsWith<BamboraException.GenericException> {
+            val event = CheckoutEventMapper.mapEventObject(EventType.AUTHORIZE, jsonResponse)
+        }
     }
 
     @Test

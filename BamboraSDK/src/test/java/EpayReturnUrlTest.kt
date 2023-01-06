@@ -20,15 +20,35 @@
  * THE SOFTWARE.
  */
 
-package com.bambora.android.java.bamborasdk
+import com.bambora.android.java.bamborasdk.BamboraException
+import com.bambora.android.java.bamborasdk.extensions.processDeeplink
+import junit.framework.TestCase.assertEquals
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import kotlin.test.assertFailsWith
 
-/**
- * Exceptions which can be thrown in the SDK.
- */
-sealed class BamboraException(message: String) : Exception(message) {
-    object InternetException : BamboraException("No Internet connection.")
-    object LoadSessionException : BamboraException("There was a problem while loading the session.")
-    object GenericException : BamboraException("An unexpected error has occurred.")
-    object SdkNotInitializedException : BamboraException("Please initialize the Bambora SDK before you use this operation.")
-    object SdkAlreadyInitializedException : BamboraException("SDK already initialized. Close the SDK first by calling Bambora.close()")
+@RunWith(RobolectricTestRunner::class)
+internal class EpayReturnUrlTest {
+    @Test
+    fun get_epayreturnurl() {
+        val deeplink = "bamborademoapp://bamborasdk/return/return?epayreturn=https://wallet-v1.api.epay.eu/allowed/domain"
+        val epayReturnUrl = deeplink.processDeeplink()
+
+        assertEquals("https://wallet-v1.api.epay.eu/allowed/domain", epayReturnUrl)
+    }
+
+    @Test
+    fun get_epayreturnurl_fail() {
+        var deeplink = "bamborademoapp://bamborasdk/return/return?epayreturn?wrongvalue"
+
+        assertFailsWith<BamboraException.GenericException> {
+            deeplink.processDeeplink()
+        }
+
+        deeplink = "bamborademoapp://bamborasdk/return/return?epayreturn/wrongvalue"
+        assertFailsWith<BamboraException.GenericException> {
+            deeplink.processDeeplink()
+        }
+    }
 }

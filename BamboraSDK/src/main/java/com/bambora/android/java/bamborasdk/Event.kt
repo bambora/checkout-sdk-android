@@ -85,4 +85,3 @@ data class Fee(
 
 @Serializable
 internal data class AuthorizeResponse(val acceptUrl: String, val data: Authorize) : Event()
-

@@ -1,6 +1,8 @@
 # Bambora Checkout SDK for Android
 The Checkout SDK for Android provides the tools necessary for integrating Bambora Checkout with your Android application. The SDK helps with displaying the Checkout session, and sending out events during the payment flow.
 
+![Demo of the card payment flow.](/Assets/Card_Payment_Demo.gif)
+
 ## Installation
 Before you are able to use the Bambora Checkout SDK in your project, there is some setup required.
 
@@ -9,32 +11,33 @@ First, add the Checkout SDK to your project's `build.gradle` file.
 `implementation bambora:checkout-sdk-android:2.0.0`
 
 ### Android Manifest
-
-Also add the code below to your AndroidManifest.xml in your app package.
-
+In the AndroidManifest.xml of your app package, you should add the following activity.
 ```
 <activity
-    android:name="com.bambora.android.java.checkoutsdk.BamboraReturnActivity"
-    android:exported="true"
-    android:launchMode="singleTask"
-    android:theme="@style/Theme.Bambora.Checkout"
-    android:windowSoftInputMode="adjustResize">
-    <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
+  android:name=".ReturnActivity"
+  android:exported="true"
+  android:launchMode="singleTask">
+  <intent-filter>
+    <action android:name="android.intent.action.VIEW" />
 
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <category android:name="android.intent.category.DEFAULT" />
 
-        <data
-            android:scheme="bamborademoapp"
-            android:host="bamborasdk"
-            android:path="/return" />
-    </intent-filter>
+    <data
+     android:host="bamborasdk"
+     android:path="/return"
+     android:scheme="bamborademoapp" />
+  </intent-filter>
 </activity>
 ```
 
-A deep link implementation is required for processing wallet products. 
-For correct operation, change the scheme of the BamboraReturnActivity in your manifest according to your insight. Please leave the host and path values untouched. In the SessionFragment, also change the APP_SCHEME value to match your set scheme.
+A deep link implementation is required for processing wallet products.
+For correct operation, change the value of the scheme according to your insight. Please leave the host and path values untouched. In the SessionFragment, also change the APP_SCHEME value to match your set scheme.
+You are free to give your `ReturnActivity` a different name, but please make sure it will still intercept the deeplink URL and forward it to the `MainActivity` of your app.
+
+Also ensure that your `MainActivity` - which could be a different name - has one of the following launch modes.
+`android:launchMode="standard"` or `android:launchMode="singleTop"`
+This is to ensure that the process of redirecting to and from wallet apps is optimized.
 
 ## Usage
 Processing a payment through the Bambora Checkout SDK requires only a couple of easy steps:

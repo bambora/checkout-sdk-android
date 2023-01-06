@@ -35,7 +35,6 @@ internal class CustomCheckoutTest {
         Bambora.close()
     }
 
-
     @Test
     fun baseUrl_with_value() {
         val customBaseUrl = "https://base.url.com"

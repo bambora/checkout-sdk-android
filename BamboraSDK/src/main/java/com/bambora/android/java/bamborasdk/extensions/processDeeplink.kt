@@ -20,15 +20,25 @@
  * THE SOFTWARE.
  */
 
-package com.bambora.android.java.bamborasdk
+package com.bambora.android.java.bamborasdk.extensions
+
+import android.net.Uri
+import com.bambora.android.java.bamborasdk.BamboraException
 
 /**
- * Exceptions which can be thrown in the SDK.
+ * Extension function to retrieve the epayReturnUrl from a String and validate if it is from an allowed domain.
  */
-sealed class BamboraException(message: String) : Exception(message) {
-    object InternetException : BamboraException("No Internet connection.")
-    object LoadSessionException : BamboraException("There was a problem while loading the session.")
-    object GenericException : BamboraException("An unexpected error has occurred.")
-    object SdkNotInitializedException : BamboraException("Please initialize the Bambora SDK before you use this operation.")
-    object SdkAlreadyInitializedException : BamboraException("SDK already initialized. Close the SDK first by calling Bambora.close()")
+internal fun String.processDeeplink(): String {
+    val uri = Uri.parse(this)
+    val epayReturnUrl = uri.getQueryParameter("epayreturn")
+
+    return epayReturnUrl.validEpayReturnUrl()
+}
+
+private fun String?.validEpayReturnUrl(): String {
+    return if (this != null && this.isAllowedDomain()) {
+        this
+    } else {
+        throw BamboraException.GenericException
+    }
 }

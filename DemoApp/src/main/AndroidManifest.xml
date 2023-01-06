@@ -22,8 +22,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.bambora.android.java.demoapp">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="true"
@@ -34,31 +33,30 @@
         android:theme="@style/Theme.BamboraCheckoutSDK"
         tools:targetApi="31">
         <activity
+            android:name=".ReturnActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="bamborasdk"
+                    android:path="/return"
+                    android:scheme="bamborademoapp" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.bambora.android.java.bamborasdk.BamboraReturnActivity"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.Bambora.Checkout"
-            android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="bamborademoapp"
-                    android:host="bamborasdk"
-                    android:path="/return" />
             </intent-filter>
         </activity>
     </application>

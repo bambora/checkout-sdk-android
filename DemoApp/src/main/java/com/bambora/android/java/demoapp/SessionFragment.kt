@@ -23,18 +23,12 @@
 package com.bambora.android.java.demoapp
 
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import com.bambora.android.java.bamborasdk.Bambora
-import com.bambora.android.java.bamborasdk.Checkout
-import com.bambora.android.java.bamborasdk.CheckoutEventReceiver
-import com.bambora.android.java.bamborasdk.Event
 import com.bambora.android.java.demoapp.databinding.FragmentSessionBinding
 
 /**
@@ -44,8 +38,7 @@ import com.bambora.android.java.demoapp.databinding.FragmentSessionBinding
 class SessionFragment : Fragment() {
 
     private lateinit var binding: FragmentSessionBinding
-    private lateinit var checkout: Checkout
-    private val authorizationDataViewModel: AuthorizationDataViewModel by activityViewModels()
+    private lateinit var bamboraSDKHelper: BamboraSDKHelper
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreate(savedInstanceState)
@@ -54,6 +47,7 @@ class SessionFragment : Fragment() {
         loadCustomUrlText()
         loadCheckboxStatus()
         initCustomUrlCheckbox()
+        bamboraSDKHelper = (activity as MainActivity).bamboraSDKHelper
         return binding.root
     }
 
@@ -63,10 +57,14 @@ class SessionFragment : Fragment() {
                 sessionIdLayout.isErrorEnabled = false
                 customUrlLayout.isErrorEnabled = false
                 if (isValidInput()) {
-                    initBamboraCheckout(
-                        getSecureBaseUrl(customUrlInput.text.toString()),
-                        sessionIdInput.text.toString()
-                    )
+                    if (checkboxCustomUrl.isChecked) {
+                        bamboraSDKHelper.openCheckout(
+                            sessionIdInput.text.toString(),
+                            getSecureBaseUrl(customUrlInput.text.toString()),
+                        )
+                    } else {
+                        bamboraSDKHelper.openCheckout(sessionIdInput.text.toString())
+                    }
                 }
             }
         }
@@ -176,56 +174,7 @@ class SessionFragment : Fragment() {
         return secureBaseUrl
     }
 
-    /**
-     * Initializes the Bambora Checkout with the use of the custom base URL and session id, and establishes a callback function for when a Bambora [Event] is received.
-     */
-    private fun initBamboraCheckout(baseURL: String, sessionId: String) {
-        context?.let { applicationContext ->
-            checkout = if (binding.checkboxCustomUrl.isChecked) {
-                Bambora.checkout(sessionId, APP_SCHEME, baseURL)
-            } else {
-                Bambora.checkout(sessionId, APP_SCHEME)
-            }
-
-            checkout.apply {
-                subscribeOnAllEvents()
-                show(applicationContext)
-                checkoutEventReceiver = object : CheckoutEventReceiver {
-                    override fun onEventDispatched(event: Event) {
-                        processReceivedEvent(event)
-                        Log.i(SessionFragment::class.java.simpleName, "onEventDispatched: $event")
-                    }
-                }
-            }
-        }
-    }
-
-    private fun openOverviewFragment() {
-        activity?.supportFragmentManager?.beginTransaction()?.apply {
-            replace(R.id.fragmentContainerView, OverviewFragment())
-            commit()
-        }
-    }
-
-    /**
-     * Determines how to process the [Event] that is received from the SDK.
-     */
-    private fun processReceivedEvent(event: Event) {
-        when (event) {
-            is Event.Authorize -> {
-                authorizationDataViewModel.authorizationData = event
-                openOverviewFragment()
-            }
-            is Event.CheckoutViewClose -> {
-                Bambora.close()
-            }
-            else -> {}
-        }
-
-    }
-
     private companion object {
-        const val APP_SCHEME = "bamborademoapp"
         const val PREFS_NAME = "DemoAppPreferences"
         const val CUSTOM_BASE_URL_KEY = "CustomBaseURL"
         const val CHECKBOX_STATUS = "CheckboxStatus"

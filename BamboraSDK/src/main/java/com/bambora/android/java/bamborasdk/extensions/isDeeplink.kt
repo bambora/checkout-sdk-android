@@ -26,9 +26,19 @@ import android.net.Uri
 
 /**
  * Extension function for checking if a Uri is a deeplink.
- * Returns false if Uri contains 'http' or 'https'.
+ * Returns false if Uri's scheme is 'http' or 'https'.
  */
 internal fun Uri.isDeeplink(): Boolean {
 
     return !(this.scheme.equals("http") || this.scheme.equals("https"))
+}
+
+/**
+ * Extension function for checking if a String is a deeplink.
+ * Returns false if String's scheme is 'http' or 'https'.
+ */
+internal fun String.isDeeplink(): Boolean {
+    val uri = Uri.parse(this)
+
+    return uri.isDeeplink()
 }

@@ -23,11 +23,11 @@
 package com.bambora.android.java.demoapp
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bambora.android.java.bamborasdk.Bambora
@@ -40,98 +40,173 @@ import com.bambora.android.java.demoapp.databinding.FragmentOverviewBinding
 class OverviewFragment : Fragment() {
 
     private lateinit var binding: FragmentOverviewBinding
-    private val authorizationDataViewModel: AuthorizationDataViewModel by activityViewModels()
+    private lateinit var bamboraSDKHelper: BamboraSDKHelper
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentOverviewBinding.inflate(inflater, container, false)
+        bamboraSDKHelper = (activity as MainActivity).bamboraSDKHelper
         initOverviewValues()
         return binding.root
     }
 
     private fun initOverviewValues() {
-        binding.apply {
-            with(authorizationDataViewModel.authorizationData) {
-                transactionIdDataTextView.text = txnId
-                orderIdDataTextView.text = orderId
-                referenceDataTextView.text = reference
-                amountDataTextView.text = amount
-                currencyDataTextView.text = currency
-                dateDataTextView.text = date
-                timeDataTextView.text = time
-                feeIdDataTextView.text = feeId
-                transactionFeeDataTextView.text = txnFee
-                paymentTypeDataTextView.text = paymentType
-                walletName?.let {
-                    walletDataTextView.text = walletName
-                    walletDataTextView.setTextColor(resources.getColor(R.color.white))
-                } ?: run {
-                    walletDataTextView.text = "n.a."
-                    walletDataTextView.setTextColor(resources.getColor(R.color.gray))
-                }
-                cardNumber?.let {
-                    cardNumberDataTextView.text = cardNumber
-                    cardNumberDataTextView.setTextColor(resources.getColor(R.color.white))
-                } ?: run {
-                    cardNumberDataTextView.text = "n.a."
-                    cardNumberDataTextView.setTextColor(resources.getColor(R.color.gray))
-                }
-                expireMonth?.let {
-                    expireMonthDataTextView.text = expireMonth
-                    expireMonthDataTextView.setTextColor(resources.getColor(R.color.white))
-                } ?: run {
-                    expireMonthDataTextView.text = "n.a."
-                    expireMonthDataTextView.setTextColor(resources.getColor(R.color.gray))
-                }
-                expireYear?.let {
-                    expireYearDataTextView.text = expireYear
-                    expireYearDataTextView.setTextColor(resources.getColor(R.color.white))
-                } ?: run {
-                    expireYearDataTextView.text = "n.a."
-                    expireYearDataTextView.setTextColor(resources.getColor(R.color.gray))
-                }
-                subscriptionId?.let {
-                    subscriptionIdDataTextView.text = subscriptionId
-                    subscriptionIdDataTextView.setTextColor(resources.getColor(R.color.white))
-                } ?: run {
-                    subscriptionIdDataTextView.text = "n.a."
-                    subscriptionIdDataTextView.setTextColor(resources.getColor(R.color.gray))
-                }
-                tokenId?.let {
-                    tokenIdDataTextView.text = tokenId
-                    tokenIdDataTextView.setTextColor(resources.getColor(R.color.white))
-                } ?: run {
-                    tokenIdDataTextView.text = "n.a."
-                    tokenIdDataTextView.setTextColor(resources.getColor(R.color.gray))
-                }
-                eci?.let {
-                    eciDataTextView.text = eci
-                    eciDataTextView.setTextColor(resources.getColor(R.color.white))
-                } ?: run {
-                    eciDataTextView.text = "n.a."
-                    eciDataTextView.setTextColor(resources.getColor(R.color.gray))
-                }
-                issuerCountry?.let {
-                    issuerCountryDataTextView.text = issuerCountry
-                    issuerCountryDataTextView.setTextColor(resources.getColor(R.color.white))
-                } ?: run {
-                    issuerCountryDataTextView.text = "n.a."
-                    issuerCountryDataTextView.setTextColor(resources.getColor(R.color.gray))
-                }
-                hashDataTextView.text = hash
-
-                additionalFields?.let {
-                    val recyclerView: RecyclerView = binding.additionalFieldsRecyclerView
-                    recyclerView.layoutManager = LinearLayoutManager(this@OverviewFragment.context)
-                    recyclerView.adapter = AdditionalFieldAdapter(it)
-                }
-                
-                newSessionButton.setOnClickListener {
-                    if (Bambora.isInitialized) {
-                        Bambora.close()
+        context?.let { context ->
+            binding.apply {
+                with(bamboraSDKHelper.authorizationData) {
+                    transactionIdDataTextView.text = txnId
+                    orderIdDataTextView.text = orderId
+                    referenceDataTextView.text = reference
+                    amountDataTextView.text = amount
+                    currencyDataTextView.text = currency
+                    dateDataTextView.text = date
+                    timeDataTextView.text = time
+                    feeIdDataTextView.text = feeId
+                    transactionFeeDataTextView.text = txnFee
+                    paymentTypeDataTextView.text = paymentType
+                    walletName?.let {
+                        walletDataTextView.text = walletName
+                        walletDataTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.white
+                            )
+                        )
+                    } ?: run {
+                        walletDataTextView.text = "n.a."
+                        walletDataTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gray
+                            )
+                        )
                     }
-                    activity?.supportFragmentManager?.beginTransaction()?.apply {
-                        replace(R.id.fragmentContainerView, SessionFragment())
-                        commit()
+                    cardNumber?.let {
+                        cardNumberDataTextView.text = cardNumber
+                        cardNumberDataTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.white
+                            )
+                        )
+                    } ?: run {
+                        cardNumberDataTextView.text = "n.a."
+                        cardNumberDataTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gray
+                            )
+                        )
+                    }
+                    expireMonth?.let {
+                        expireMonthDataTextView.text = expireMonth
+                        expireMonthDataTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.white
+                            )
+                        )
+                    } ?: run {
+                        expireMonthDataTextView.text = "n.a."
+                        expireMonthDataTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gray
+                            )
+                        )
+                    }
+                    expireYear?.let {
+                        expireYearDataTextView.text = expireYear
+                        expireYearDataTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.white
+                            )
+                        )
+                    } ?: run {
+                        expireYearDataTextView.text = "n.a."
+                        expireYearDataTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gray
+                            )
+                        )
+                    }
+                    subscriptionId?.let {
+                        subscriptionIdDataTextView.text = subscriptionId
+                        subscriptionIdDataTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.white
+                            )
+                        )
+                    } ?: run {
+                        subscriptionIdDataTextView.text = "n.a."
+                        subscriptionIdDataTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gray
+                            )
+                        )
+                    }
+                    tokenId?.let {
+                        tokenIdDataTextView.text = tokenId
+                        tokenIdDataTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.white
+                            )
+                        )
+                    } ?: run {
+                        tokenIdDataTextView.text = "n.a."
+                        tokenIdDataTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gray
+                            )
+                        )
+                    }
+                    eci?.let {
+                        eciDataTextView.text = eci
+                        eciDataTextView.setTextColor(ContextCompat.getColor(context, R.color.white))
+                    } ?: run {
+                        eciDataTextView.text = "n.a."
+                        eciDataTextView.setTextColor(ContextCompat.getColor(context, R.color.gray))
+                    }
+                    issuerCountry?.let {
+                        issuerCountryDataTextView.text = issuerCountry
+                        issuerCountryDataTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.white
+                            )
+                        )
+                    } ?: run {
+                        issuerCountryDataTextView.text = "n.a."
+                        issuerCountryDataTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gray
+                            )
+                        )
+                    }
+                    hashDataTextView.text = hash
+
+                    additionalFields?.let {
+                        val recyclerView: RecyclerView = binding.additionalFieldsRecyclerView
+                        recyclerView.layoutManager =
+                            LinearLayoutManager(this@OverviewFragment.context)
+                        recyclerView.adapter = AdditionalFieldAdapter(it)
+                    }
+
+                    newSessionButton.setOnClickListener {
+                        if (Bambora.isInitialized) {
+                            Bambora.close()
+                        }
+                        (activity as MainActivity).openSessionFragment()
                     }
                 }
             }
