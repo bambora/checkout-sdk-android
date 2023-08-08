@@ -1,0 +1,145 @@
+/*
+ * Copyright (c) 2022.  Bambora ( https://bambora.com/ )
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
+    id 'signing'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.22'
+    id 'org.jetbrains.dokka' version "1.6.0"
+    id 'org.jlleitschuh.gradle.ktlint'
+}
+
+android {
+    namespace 'com.bambora.android.java.checkoutsdk'
+
+    compileSdk 33
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    defaultConfig {
+        minSdk 26
+        targetSdk 33
+        buildConfigField "String", "VERSION_NAME", '"CheckoutSDKAndroid/2.0.0"'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.10.3'
+    testImplementation 'org.mockito:mockito-core:5.4.0'
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
+    testImplementation "io.mockk:mockk:1.13.5"
+    testImplementation 'org.jetbrains.kotlin:kotlin-test:1.8.22'
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    archiveClassifier.set('sources')
+}
+
+task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+    archiveClassifier.set("javadoc")
+    from(dokkaJavadoc.outputDirectory)
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            libraryCheckoutSDK(MavenPublication) {
+
+                from components.release
+                artifact sourcesJar
+                artifact javadocJar
+
+                setGroupId POM_GROUP_ID
+                setArtifactId POM_ARTIFACT_ID
+                version POM_VERSION
+
+                pom {
+                    name = POM_NAME
+                    description = POM_DESCRIPTION
+                    url = POM_URL
+
+                    organization {
+                        name = POM_ORGANIZATION_NAME
+                        url = POM_ORGANIZATION_URL
+                    }
+
+                    licenses {
+                        license {
+                            name = POM_LICENSE_NAME
+                            url = POM_LICENSE_URL
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            name = POM_DEVELOPER_NAME
+                            email = POM_DEVELOPER_EMAIL
+                            organization = POM_DEVELOPER_ORGANIZATION
+                            organizationUrl = POM_DEVELOPER_ORGANIZATIONURL
+                        }
+                    }
+
+                    issueManagement {
+                        system = POM_ISSUEMANAGEMENT_SYSTEM
+                        url = POM_ISSUEMANAGEMENT_URL
+                    }
+
+                    scm {
+                        connection = POM_SCM_CONNECTION
+                        developerConnection = POM_SCM_DEVELOPERCONNECTION
+                        url = POM_SCM_URL
+                    }
+                }
+            }
+        }
+    }
+
+    signing {
+        sign publishing.publications
+    }
+}
