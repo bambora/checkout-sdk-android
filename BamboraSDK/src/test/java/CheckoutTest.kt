@@ -28,6 +28,7 @@ import com.bambora.android.java.checkoutsdk.EventType
 import com.bambora.android.java.checkoutsdk.extensions.isPackageInstalled
 import io.mockk.every
 import io.mockk.mockkStatic
+import java.util.UUID
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
@@ -63,7 +64,7 @@ internal class CheckoutTest {
     private val mockBamboraCheckoutActivity = mock(BamboraCheckoutActivity::class.java)
     private lateinit var defaultCheckout: Checkout
     private val appScheme = "appScheme"
-    private val sessionToken = "369b2892a3c44a5699d557a37c4a78a6"
+    private val sessionToken = UUID.randomUUID().toString()
     private val returnUrl = "appScheme://bamborasdk/return"
     private val eventsToSubscribe = listOf(
         EventType.AUTHORIZE,

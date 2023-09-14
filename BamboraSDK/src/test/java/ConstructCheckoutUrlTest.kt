@@ -26,6 +26,7 @@ import com.bambora.android.java.checkoutsdk.BamboraCheckoutActivity
 import com.bambora.android.java.checkoutsdk.extensions.isPackageInstalled
 import io.mockk.every
 import io.mockk.mockkStatic
+import java.util.UUID
 import junit.framework.TestCase.assertEquals
 import org.junit.After
 import org.junit.BeforeClass
@@ -49,7 +50,7 @@ internal class ConstructCheckoutUrlTest {
     private val customBaseUrl = "https://base.url.com"
     private val productionUrl = "https://v1.checkout.bambora.com"
     private val appScheme = "bamborademoapp"
-    private val sessionToken = "369b2892a3c44a5699d557a37c4a78a6"
+    private val sessionToken = UUID.randomUUID().toString()
 
     @After
     fun closeSDK() {

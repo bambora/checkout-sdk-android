@@ -30,7 +30,7 @@ import com.bambora.android.java.demoapp.databinding.ActivityMainBinding
 /**
  * The initial activity of the app.
  *
- * If it is redirected to from the [ReturnActivity], it will have a deeplink URL in its extras.
+ * If it is redirected to from a wallet app, it will have a deeplink URL in its intent data.
  * If the deeplink URL is not null, it will process the deeplink based on whether the Checkout is initialized or not.
  */
 class MainActivity : AppCompatActivity() {
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         openSessionFragment()
 
-        val deeplink = intent?.extras?.getString("deeplink")
+        val deeplink = intent?.dataString
         if (deeplink != null) {
             bamboraSDKHelper.processDeeplink(deeplink)
         }
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        val deeplink = intent?.extras?.getString("deeplink")
+        val deeplink = intent?.dataString
         if (deeplink != null) {
             bamboraSDKHelper.processDeeplink(deeplink)
         }
