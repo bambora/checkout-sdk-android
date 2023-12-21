@@ -32,28 +32,8 @@ class AllowedDomainTest {
 
     @Test
     fun allowed_domain() {
-        var allowedDomain = "https://wallet-v1-test.api.epay.eu/allowed/domain"
+        var allowedDomain = "https://wallet-v1.api-eu.bambora.com/allowed/domain"
         var isAllowed = allowedDomain.isAllowedDomain()
-
-        assertTrue(isAllowed)
-
-        allowedDomain = "https://wallet-v1.api.epay.eu/allowed/domain"
-        isAllowed = allowedDomain.isAllowedDomain()
-
-        assertTrue(isAllowed)
-
-        allowedDomain = "https://wallet-v1.api-eu.bambora.com/allowed/domain"
-        isAllowed = allowedDomain.isAllowedDomain()
-
-        assertTrue(isAllowed)
-
-        allowedDomain = "https://authorize-v1-test.api.epay.eu/allowed/domain"
-        isAllowed = allowedDomain.isAllowedDomain()
-
-        assertTrue(isAllowed)
-
-        allowedDomain = "https://authorize-v1.api.epay.eu/allowed/domain"
-        isAllowed = allowedDomain.isAllowedDomain()
 
         assertTrue(isAllowed)
 
@@ -65,12 +45,12 @@ class AllowedDomainTest {
 
     @Test
     fun forbidden_domain() {
-        var forbiddenDomain = "https://forbidden.domain/forbidden/domain"
+        var forbiddenDomain = "https://example.com/forbidden/domain"
         var isAllowed = forbiddenDomain.isAllowedDomain()
 
         assertFalse(isAllowed)
 
-        forbiddenDomain = "https://api.epay.eu/allowed/domain"
+        forbiddenDomain = "https://forbidden.domain/forbidden/domain"
         isAllowed = forbiddenDomain.isAllowedDomain()
 
         assertFalse(isAllowed)

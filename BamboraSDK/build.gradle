@@ -42,7 +42,7 @@ android {
     defaultConfig {
         minSdk 26
         targetSdk 33
-        buildConfigField "String", "VERSION_NAME", '"CheckoutSDKAndroid/2.0.1"'
+        buildConfigField "String", "VERSION_NAME", '"CheckoutSDKAndroid/2.0.2"'
     }
 
     buildTypes {

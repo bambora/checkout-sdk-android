@@ -20,7 +20,7 @@ pluginManagement {
 ```
 
 Then add the SDK as a dependency in your project's `build.gradle` file.
-`implementation com.bambora.checkout:androidsdk:2.0.1`
+`implementation com.bambora.checkout:androidsdk:2.0.2`
 
 ## Usage
 Processing a payment through the Bambora Checkout SDK requires only a few easy steps:

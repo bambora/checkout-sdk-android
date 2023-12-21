@@ -79,12 +79,12 @@ object Bambora {
      * @return An instance of Checkout, use this instance to interact with the Checkout.
      */
     fun checkoutAfterReturn(url: String): Checkout {
-        val epayReturnUrl = url.processDeeplink()
+        val returnUrl = url.processDeeplink()
 
         if (isInitialized) {
-            checkout?.setEpayReturnUrl(epayReturnUrl)
+            checkout?.setCheckoutUrlAfterReturn(returnUrl)
         } else {
-            checkout = Checkout(epayReturnUrl)
+            checkout = Checkout(returnUrl)
         }
 
         return checkout ?: throw BamboraException.GenericException

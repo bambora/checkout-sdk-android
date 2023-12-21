@@ -74,7 +74,7 @@ internal class ConstructCheckoutUrlTest {
 
         val expectedEncodedPaymentOptions =
             """
-            eyJhcHBSZXR1cm5VcmwiOiJiYW1ib3JhZGVtb2FwcDovL2JhbWJvcmFzZGsvcmV0dXJuIiwicGF5bWVudEFwcHNJbnN0YWxsZWQiOltdLCJ2ZXJzaW9uIjoiQ2hlY2tvdXRTREtBbmRyb2lkLzIuMC4wIn0=
+            eyJhcHBSZXR1cm5VcmwiOiJiYW1ib3JhZGVtb2FwcDovL2JhbWJvcmFzZGsvcmV0dXJuIiwicGF5bWVudEFwcHNJbnN0YWxsZWQiOltdLCJ2ZXJzaW9uIjoiQ2hlY2tvdXRTREtBbmRyb2lkLzIuMC4xIn0=
             """.trimIndent()
         val expectedCheckoutUrl =
             "$customBaseUrl/$sessionToken?ui=inline#$expectedEncodedPaymentOptions"
@@ -99,7 +99,7 @@ internal class ConstructCheckoutUrlTest {
 
         val expectedEncodedPaymentOptions =
             """
-            eyJhcHBSZXR1cm5VcmwiOiJiYW1ib3JhZGVtb2FwcDovL2JhbWJvcmFzZGsvcmV0dXJuIiwicGF5bWVudEFwcHNJbnN0YWxsZWQiOlsibW9iaWxlcGF5Il0sInZlcnNpb24iOiJDaGVja291dFNES0FuZHJvaWQvMi4wLjAifQ==
+            eyJhcHBSZXR1cm5VcmwiOiJiYW1ib3JhZGVtb2FwcDovL2JhbWJvcmFzZGsvcmV0dXJuIiwicGF5bWVudEFwcHNJbnN0YWxsZWQiOlsibW9iaWxlcGF5Il0sInZlcnNpb24iOiJDaGVja291dFNES0FuZHJvaWQvMi4wLjEifQ==
             """.trimIndent()
         val expectedCheckoutUrl =
             "$productionUrl/$sessionToken?ui=inline#$expectedEncodedPaymentOptions"
@@ -124,7 +124,7 @@ internal class ConstructCheckoutUrlTest {
 
         val expectedEncodedPaymentOptions =
             """
-            eyJhcHBSZXR1cm5VcmwiOiJiYW1ib3JhZGVtb2FwcDovL2JhbWJvcmFzZGsvcmV0dXJuIiwicGF5bWVudEFwcHNJbnN0YWxsZWQiOlsidmlwcHMiXSwidmVyc2lvbiI6IkNoZWNrb3V0U0RLQW5kcm9pZC8yLjAuMCJ9
+            eyJhcHBSZXR1cm5VcmwiOiJiYW1ib3JhZGVtb2FwcDovL2JhbWJvcmFzZGsvcmV0dXJuIiwicGF5bWVudEFwcHNJbnN0YWxsZWQiOlsidmlwcHMiXSwidmVyc2lvbiI6IkNoZWNrb3V0U0RLQW5kcm9pZC8yLjAuMSJ9
             """.trimIndent()
         val expectedCheckoutUrl =
             "$productionUrl/$sessionToken?ui=inline#$expectedEncodedPaymentOptions"
@@ -149,7 +149,7 @@ internal class ConstructCheckoutUrlTest {
 
         val expectedEncodedPaymentOptions =
             """
-            eyJhcHBSZXR1cm5VcmwiOiJiYW1ib3JhZGVtb2FwcDovL2JhbWJvcmFzZGsvcmV0dXJuIiwicGF5bWVudEFwcHNJbnN0YWxsZWQiOlsic3dpc2giXSwidmVyc2lvbiI6IkNoZWNrb3V0U0RLQW5kcm9pZC8yLjAuMCJ9
+            eyJhcHBSZXR1cm5VcmwiOiJiYW1ib3JhZGVtb2FwcDovL2JhbWJvcmFzZGsvcmV0dXJuIiwicGF5bWVudEFwcHNJbnN0YWxsZWQiOlsic3dpc2giXSwidmVyc2lvbiI6IkNoZWNrb3V0U0RLQW5kcm9pZC8yLjAuMSJ9
             """.trimIndent()
         val expectedCheckoutUrl =
             "$productionUrl/$sessionToken?ui=inline#$expectedEncodedPaymentOptions"
@@ -174,7 +174,7 @@ internal class ConstructCheckoutUrlTest {
 
         val expectedEncodedPaymentOptions =
             """
-            eyJhcHBSZXR1cm5VcmwiOiJiYW1ib3JhZGVtb2FwcDovL2JhbWJvcmFzZGsvcmV0dXJuIiwicGF5bWVudEFwcHNJbnN0YWxsZWQiOlsibW9iaWxlcGF5IiwidmlwcHMiLCJzd2lzaCJdLCJ2ZXJzaW9uIjoiQ2hlY2tvdXRTREtBbmRyb2lkLzIuMC4wIn0=
+            eyJhcHBSZXR1cm5VcmwiOiJiYW1ib3JhZGVtb2FwcDovL2JhbWJvcmFzZGsvcmV0dXJuIiwicGF5bWVudEFwcHNJbnN0YWxsZWQiOlsibW9iaWxlcGF5IiwidmlwcHMiLCJzd2lzaCJdLCJ2ZXJzaW9uIjoiQ2hlY2tvdXRTREtBbmRyb2lkLzIuMC4xIn0=
             """.trimIndent()
         val expectedCheckoutUrl =
             "$productionUrl/$sessionToken?ui=inline#$expectedEncodedPaymentOptions"

@@ -48,13 +48,13 @@ internal class BamboraCheckoutActivity : AppCompatActivity() {
     }
 
     /**
-     * Instructs the fragment to open the epayReturnUrl that was received.
+     * Instructs the fragment to open the returnUrl that was received.
      */
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        val epayReturnUrl = intent?.extras?.getString("urlToOpen")
-        if (epayReturnUrl != null) {
-            bamboraCheckoutFragment.openUrl(epayReturnUrl)
+        val returnUrl = intent?.extras?.getString("urlToOpen")
+        if (returnUrl != null) {
+            bamboraCheckoutFragment.openUrl(returnUrl)
         }
     }
 }

@@ -63,8 +63,8 @@ class Checkout {
         )
     }
 
-    internal constructor(epayReturnUrl: String) {
-        this.checkoutUrl = epayReturnUrl
+    internal constructor(returnUrl: String) {
+        this.checkoutUrl = returnUrl
     }
 
     /**
@@ -145,8 +145,8 @@ class Checkout {
         }
     }
 
-    internal fun setEpayReturnUrl(epayReturnUrl: String) {
-        this.checkoutUrl = epayReturnUrl
+    internal fun setCheckoutUrlAfterReturn(returnUrl: String) {
+        this.checkoutUrl = returnUrl
     }
 
     /**

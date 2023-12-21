@@ -26,16 +26,16 @@ import android.net.Uri
 import com.bambora.android.java.checkoutsdk.BamboraException
 
 /**
- * Extension function to retrieve the epayReturnUrl from a String and validate if it is from an allowed domain.
+ * Extension function to retrieve the returnUrl from a String and validate if it is from an allowed domain.
  */
 internal fun String.processDeeplink(): String {
     val uri = Uri.parse(this)
-    val epayReturnUrl = uri.getQueryParameter("epayreturn")
+    val returnUrl = uri.getQueryParameter("epayreturn")
 
-    return epayReturnUrl.validEpayReturnUrl()
+    return returnUrl.validReturnUrl()
 }
 
-private fun String?.validEpayReturnUrl(): String {
+private fun String?.validReturnUrl(): String {
     return if (this != null && this.isAllowedDomain()) {
         this
     } else {

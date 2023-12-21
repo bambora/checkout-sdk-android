@@ -29,21 +29,21 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-internal class EpayReturnUrlTest {
+internal class ReturnUrlTest {
     @Test
-    fun get_epayreturnurl() {
+    fun get_returnurl_success() {
         val deeplink =
             """
-            bamborademoapp://bamborasdk/return/return?epayreturn=https://wallet-v1.api.epay.eu/allowed/domain
+            bamborademoapp://bamborasdk/return/return?epayreturn=https://wallet-v1.api-eu.bambora.com/allowed/domain
             """.trimIndent()
-        val epayReturnUrl = deeplink.processDeeplink()
+        val returnUrl = deeplink.processDeeplink()
 
-        assertEquals("https://wallet-v1.api.epay.eu/allowed/domain", epayReturnUrl)
+        assertEquals("https://wallet-v1.api-eu.bambora.com/allowed/domain", returnUrl)
     }
 
     @Test
-    fun get_epayreturnurl_fail() {
-        var deeplink = "bamborademoapp://bamborasdk/return/return?epayreturn?wrongvalue"
+    fun get_returnurl_fail() {
+        var deeplink = "bamborademoapp://bamborasdk/return?epayreturn=https://example.com"
 
         assertFailsWith<BamboraException.GenericException> {
             deeplink.processDeeplink()
